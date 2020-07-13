@@ -42,10 +42,17 @@ export async function getAll() {
 // Create subscription
 export async function create(parentValue, { crateId }, { auth }) {
   if(auth.user && auth.user.id > 0) {
-    return await models.Subscription.create({
-      crateId,
-      userId: auth.user.id
+    const check = await models.Subscription.findOne({
+      where: { crateId: crateId,userId: auth.user.id }
     })
+    if(check === null) {
+      return await models.Subscription.create({
+        crateId,
+        userId: auth.user.id
+      })
+    } else {
+      throw new Error('You are already subscribed to this crate.')
+    }
   } else {
     throw new Error('Please login to subscribe to this crate.')
   }

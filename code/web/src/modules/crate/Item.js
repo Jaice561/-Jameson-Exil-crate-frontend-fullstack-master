@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 // UI Imports
 import Card from '../../ui/card/Card'
@@ -24,24 +24,31 @@ class Item extends PureComponent {
     super(props)
 
     this.state = {
-      isLoading: false
+      isLoading: false,
+      isSubscribed:false
     }
   }
-
   onClickSubscribe = (crateId) => {
     this.setState({
-      isLoading: true
+      isLoading: true,
     })
-
     this.props.messageShow('Subscribing, please wait...')
-
     this.props.create({ crateId })
       .then(response => {
         if (response.data.errors && response.data.errors.length > 0) {
+          if(response.data.errors[0].message.toString().includes("already"))
+          {
+    this.setState({
+      isSubscribed: true,
+    }) ;
+          }
           this.props.messageShow(response.data.errors[0].message)
-        } else {
-          this.props.messageShow('Subscribed successfully.')
 
+        }
+        // else if(userRoutes.subscriptions.componentincludes(crateId))
+        //     this.props.messageShow('Already Subscribed.')
+        else {
+          this.props.messageShow('Subscribed successfully.')
           this.props.history.push(userRoutes.subscriptions.path)
         }
       })
@@ -50,7 +57,7 @@ class Item extends PureComponent {
       })
       .then(() => {
         this.setState({
-          isLoading: false
+          isLoading: false,
         })
 
         window.setTimeout(() => {
@@ -61,8 +68,7 @@ class Item extends PureComponent {
 
   render() {
     const { id, name, description } = this.props.crate
-    const { isLoading } = this.state
-
+    const { isLoading,isSubscribed } = this.state
     return (
       <Card style={{ width: '18em', backgroundColor: white }}>
         <p style={{ padding: '2em 3em 0 3em' }}>
@@ -79,7 +85,7 @@ class Item extends PureComponent {
               theme="primary"
               onClick={this.onClickSubscribe.bind(this, id)}
               type="button"
-              disabled={ isLoading }
+              disabled={isSubscribed}
             >
               <Icon size={1.2} style={{ color: white }}>add</Icon> Subscribe
             </Button>
@@ -89,6 +95,7 @@ class Item extends PureComponent {
     )
   }
 }
+
 
 // Component Properties
 Item.propTypes = {
