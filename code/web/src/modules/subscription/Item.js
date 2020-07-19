@@ -15,6 +15,7 @@ import { white, grey2, black } from '../../ui/common/colors'
 import { APP_URL } from '../../setup/config/env'
 import { messageShow, messageHide } from '../common/api/actions'
 import { remove, getListByUser } from '../subscription/api/actions'
+import Rating from '../rating/Item'
 
 // Component
 class Item extends PureComponent {
@@ -86,6 +87,7 @@ class Item extends PureComponent {
             >
               <Icon size={1.2} style={{ color: white }}>remove_circle_outline</Icon> Unsubscribe
             </Button>
+            <Rating />
           </p>
 
           <p style={{ color: grey2, marginTop: '1em', fontSize: '0.8em', textAlign: 'center' }}>

@@ -14,6 +14,7 @@ import { getList as getCratesList } from './api/actions'
 import Loading from '../common/Loading'
 import EmptyMessage from '../common/EmptyMessage'
 import CrateItem from './Item'
+import Rating from '../rating/Item'
 
 // Component
 class List extends PureComponent {
@@ -56,6 +57,7 @@ class List extends PureComponent {
                     ? this.props.crates.list.map(crate => (
                       <div key={crate.id} style={{ margin: '2em', float: 'left' }}>
                         <CrateItem crate={crate}/>
+                        <Rating rating={crate.rating}/>
                       </div>
                     ))
                     : <EmptyMessage message="No crates to show" />

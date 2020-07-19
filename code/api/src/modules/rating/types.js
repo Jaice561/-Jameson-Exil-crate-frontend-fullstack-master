@@ -6,7 +6,7 @@ import { UserType } from '../user/types'
 import CrateType from '../crate/types'
 
 // Subscription type
-const SubscriptionType = new GraphQLObjectType({
+const RatingType = new GraphQLObjectType({
   name: 'rating',
   description: 'Rating Type',
 
@@ -19,4 +19,4 @@ const SubscriptionType = new GraphQLObjectType({
   })
 })
 
-export default RatingType
+export default RatingType;
